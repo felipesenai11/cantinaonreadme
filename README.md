@@ -16,7 +16,7 @@ CantinaOn é um sistema SaaS (Software as a service) desenvolvido para digitaliz
 - `docs/api-draft.md`: rascunho de endpoints REST para o MVP.
 - `docs/canteen-express-integration-plan.md`: plano inicial de integração do frontend externo `canteen-express` com este backend.
 
-## Backend MVP (implementado)
+## Backend MVP
 Foi adicionado um backend inicial em `backend/` com Express e PostgreSQL como banco padrão, cobrindo os endpoints principais do rascunho:
 - Auth (`/auth/register`, `/auth/login`, `/auth/refresh`)
 - Cardápio e catálogo (`/menu/today`, `/products/:id`, `/allergens`)
@@ -33,20 +33,6 @@ Também inclui regras centrais de negócio para:
 - Geração de código de retirada de 4 dígitos após pagamento.
 - Função de recálculo de estoque online por regra FIXO ou PERCENTUAL.
 
-## Como executar
-```bash
-cd backend
-npm install
-npm start
-```
-
-Servidor padrão: `http://localhost:3000`
-
-Ou, a partir da raiz do projeto, você pode iniciar o backend com:
-```bash
-npm start
-```
-
 ### Usuários
 Como o fluxo de autenticação está 100% em PostgreSQL, não há fallback local para login.
 Crie usuários usando `POST /auth/register` antes de autenticar com `POST /auth/login`.
@@ -61,7 +47,7 @@ Credenciais padrão (com senha armazenada em bcrypt):
 - `ana.aluna@cantinaon.local` / `aluno123`
 
 
-## PostgreSQL (padrão do backend)
+## PostgreSQL
 O backend depende de PostgreSQL como configuração padrão de execução.
 
 Variáveis obrigatórias:
@@ -75,48 +61,32 @@ Endpoints já ligados ao PostgreSQL:
 - `GET /allergens`
 - `GET /health` (retorna status do banco)
 
-Exemplo com arquivo de ambiente (recomendado):
+### Como executar back
 ```bash
 cd backend
+npm i
 npm run dev
 ```
-
-> Observação: o restante dos fluxos (pedidos, carteira, parental e operações) ainda está em memória e será migrado na próxima etapa.
-
-## Frontend React (mobile-first)
-Foi adicionado um frontend inicial em `frontend/index.html` usando React (via CDN) integrado ao backend do MVP.
+Em outro terminal:
+```bash
+cd frontend
+npm i
+npm run dev
+```
 
 ### Fluxo disponível
 - Login (`/auth/login`)
 - Consulta de cardápio (`/menu/today`)
 - Criação de pedido (`/orders`)
-- Pagamento por carteira (`/wallet/pay`)
-
-### Como executar frontend
-Em um terminal, suba o backend:
-```bash
-cd backend
-npm install
-npm start
-```
-
-Em outro terminal, inicie o frontend:
-```bash
-npm run dev
-```
-
-A aplicação abre em `http://localhost:5173`.
+- Pagamento por carteira (`/wallet/pay`) NAO ESTA FUNCIONANDO
 
 
-## Plano de integração com `canteen-express`
+## Plano de integração com prototipo do front `canteen-express`
 Foi adicionada uma trilha inicial em `docs/canteen-express-integration-plan.md` com:
 - fases de execução por fluxo (discovery, MVP, staff e avançados);
 - checklist de kickoff técnico;
 - riscos e mitigação para integração incremental.
 
 ## Próximos passos recomendados
-1. Persistir dados em PostgreSQL (trocar store em memória por repositórios SQL).
-2. Implementar autenticação JWT com hash seguro de senha.
-3. Integrar Mercado Pago real (checkout + webhook assinado).
-4. Criar suíte de testes automatizados de API.
-5. Conectar frontend React ao backend.
+1. Integrar Mercado Pago real (checkout + webhook assinado).
+2. Criar suíte de testes automatizados de API.
